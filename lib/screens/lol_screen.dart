@@ -59,7 +59,8 @@ class Home extends StatelessWidget {
   icon: Icon(Icons.keyboard_return),
   label: Text ('Visitar'),
   onPressed: (){
-      launchUrlString(URL);
+    Navigator.pushNamed(context, '/dash_log');
+      //launchUrlString(URL);
     }
   );
 

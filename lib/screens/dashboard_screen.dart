@@ -1,14 +1,24 @@
 import 'package:day_night_switcher/day_night_switcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:login/assets/global_values.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   DashboardScreen({super.key});
 
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  void logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('sessionSaved');
+    Navigator.pushReplacementNamed(context, '/dash_log');
+  }
 
   @override
   Widget build(BuildContext context) {
-
-
   final btnLoL = FloatingActionButton.extended(
 
   icon: Icon(Icons.check),
@@ -30,8 +40,6 @@ class DashboardScreen extends StatelessWidget {
 
   }
 
-  
-
   Widget createDrawer() {
     return Drawer(
       child: ListView(
@@ -50,14 +58,57 @@ class DashboardScreen extends StatelessWidget {
             subtitle: Text('Carrousel'),
             onTap: () {},
           ),
-          /*DayNightSwitcher(
-            isDarkModeEnabled: isDarkModeEnabled,
+          ListTile(
+            leading: Icon(Icons.task_alt_outlined),
+            trailing: Icon(Icons.chevron_right),
+            title: Text('Task Manager'),
+            onTap: () => Navigator.pushNamed(context, '/task'), 
+          ),
+          ListTile(
+            leading: Icon(Icons.movie),
+            trailing: Icon(Icons.chevron_right),
+            title: Text('Movies'),
+            onTap: () => Navigator.pushNamed(context, '/popular'), 
+          ),
+          ListTile(
+            leading: Icon(Icons.check),
+            trailing: Icon(Icons.chevron_right),
+            title: Text('Provider'),
+            onTap: () => Navigator.pushNamed(context, '/prov'), 
+          ),
+          ListTile(
+            leading: Icon(Icons.calendar_month),
+            trailing: Icon(Icons.chevron_right),
+            title: Text('Calendario'),
+            onTap: () => Navigator.pushNamed(context, '/calendar'), 
+          ),
+          ListTile(
+            leading: Icon(Icons.person),
+            trailing: Icon(Icons.chevron_right),
+            title: Text('Profesor'),
+            onTap: () => Navigator.pushNamed(context, '/profesor'), 
+          ),
+          ListTile(
+            leading: Icon(Icons.school),
+            trailing: Icon(Icons.chevron_right),
+            title: Text('Carrera'),
+            onTap: () => Navigator.pushNamed(context, '/carrera'), 
+          ),
+          DayNightSwitcher(
+            isDarkModeEnabled: globalValues.flagTheme.value,
             onStateChanged: (isDarkModeEnabled) {
-              setState(() {
-                this.isDarkModeEnabled = isDarkModeEnabled;
-              });
+            globalValues.flagTheme.value = isDarkModeEnabled;
+            globalValues().saveValue(isDarkModeEnabled);
             },
-          ),*/
+          ),
+          ListTile(
+            leading: Icon(
+                Icons.logout), // Ícono de cerrar sesión
+            title: Text('Cerrar sesión'),
+            onTap: () {
+              logout(); // Llama a la función logout al hacer clic en "Cerrar sesión"
+            },
+          )
         ],
       ),
     );
